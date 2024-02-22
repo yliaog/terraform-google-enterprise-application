@@ -35,3 +35,15 @@ output "vpcs" {
     project_id         = vpc.project_id
   } }
 }
+
+output "cluster_projects" {
+  value = { for env, prj in module.cluster_project : env => {
+    project_id = prj.project_id
+  } }
+}
+
+output "fleet_projects" {
+  value = { for env, prj in module.fleet_project : env => {
+    project_id = prj.project_id
+  } }
+}

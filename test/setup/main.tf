@@ -155,3 +155,48 @@ module "vpc" {
     ]
   }
 }
+
+# Create cluster projects
+module "cluster_project" {
+  for_each = module.folders.ids
+  source   = "terraform-google-modules/project-factory/google"
+  version  = "~> 14.0"
+
+  name              = "eab-cluster-${each.key}"
+  random_project_id = "true"
+  org_id            = var.org_id
+  folder_id         = each.value
+  billing_account   = var.billing_account
+
+  activate_apis = [
+    "cloudresourcemanager.googleapis.com",
+    "compute.googleapis.com",
+    "iam.googleapis.com",
+    "serviceusage.googleapis.com",
+    "container.googleapis.com",
+    "gkehub.googleapis.com",
+    "anthos.googleapis.com"
+  ]
+}
+
+# Create fleet projects
+module "fleet_project" {
+  for_each = module.folders.ids
+  source   = "terraform-google-modules/project-factory/google"
+  version  = "~> 14.0"
+
+  name              = "eab-fleet-${each.key}"
+  random_project_id = "true"
+  org_id            = var.org_id
+  folder_id         = each.value
+  billing_account   = var.billing_account
+
+  activate_apis = [
+    "cloudresourcemanager.googleapis.com",
+    "compute.googleapis.com",
+    "iam.googleapis.com",
+    "serviceusage.googleapis.com",
+    "gkehub.googleapis.com",
+    "anthos.googleapis.com"
+  ]
+}
